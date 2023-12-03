@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="./style.css">
+<title>Weather App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Arvo&family=Bitter:wght@300&family=Caladea:ital,wght@0,400;0,700;1,400&family=Chivo:wght@200&family=Concert+One&family=Crimson+Text:ital@1&family=Cutive+Mono&family=Dancing+Script:wght@400;500&family=Graduate&family=IBM+Plex+Serif&family=Josefin+Sans:wght@200&family=Kurale&family=Merriweather:wght@300&family=Neuton&family=Open+Sans:ital,wght@0,300;0,400;1,400&family=Oswald:wght@200;300;400;500&family=Outfit&family=PT+Sans&family=Pacifico&family=Playfair+Display&family=Roboto:ital,wght@0,100;1,100&family=Signika:wght@300&family=Skranji&family=Slabo+27px&family=Staatliches&family=Titillium+Web:wght@200&family=Voltaire&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="main">
+    <div>
+        <h1 class="weather">Weather Forecast</h1>
+    </div>
+  <div id="toggle">
+    <input type="text" id="city" placeholder="Enter city ">
+        <button id="btn" onclick="fetchWeather()">Show Weather</button>
+    </div>
+	<div>
+    <h1 id="city-name"></h1>
+    <p id="country"></p>
+    <p id="temperature"></p>
+    <p id="humidity"></p>
+    <p id="wind-speed"></p>
+    <p id="description"></p>
+     </div>
+</div>
+
+<script>
+    // Add JavaScript code here
+    async function fetchWeather() {
+		document.getElementById('toggle').style.display = 'none';
+        const city = document.getElementById('city').value;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            displayWeather(data);
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+        }
+    }
+    function displayWeather(data) {
+        const cityName = document.getElementById('city-name');
+        const country = document.getElementById('country');
+        const temperature = document.getElementById('temperature');
+        const humidity = document.getElementById('humidity');
+        const windSpeed = document.getElementById('wind-speed');
+        const description = document.getElementById('description');
+
+        cityName.textContent = data.name;
+        country.textContent = `Country : ${data.sys.country}`;
+        temperature.textContent = `Temperature: ${data.main.temp}°C`;
+        humidity.textContent = `Humidity: ${data.main.humidity}%`;
+        windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
+        description.textContent = `Description: ${data.weather[0].description}`;
+    }
+</script>
+
+</body>
+</html>
